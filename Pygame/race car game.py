@@ -4,8 +4,6 @@ import random
 
 pygame.init()
 crash_sound = pygame.mixer.Sound('crash.wav')
-pygame.mixer.music.load('big_blue_mk8.wav')
-
 
 display_width = 800
 display_height = 600
@@ -81,7 +79,6 @@ def car(img, x, y):
     
     
 def crash():
-    pygame.mixer.music.stop()
     pygame.mixer.Sound.play(crash_sound)
     
     largeText = pygame.font.Font('freesansbold.ttf', 115)
@@ -134,13 +131,11 @@ def quitgame():
 
 def unpause():
     global pause
-    pygame.mixer.music.unpause()
     pause = False
     
 
 def pause_game():
     
-    pygame.mixer.music.pause()
     
     largeText = pygame.font.Font('freesansbold.ttf', 115)
     TextSurf, TextRect = text_objects('Paused', largeText)
@@ -283,7 +278,6 @@ def game_intro():
         
 def normal_game():
     global pause, score
-    pygame.mixer.music.play(-1)
     
     x = (display_width * 0.45)
     y = (display_height * 0.75)
