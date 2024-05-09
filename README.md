@@ -1,4 +1,6 @@
-RidgenRacer README
+#RidgenRacer
+
+![Alt text](Screenshots/IntroMenu.png?raw=true "Title")
 
 Welcome to RidgenRacer, a small car game where your objective is to avoid the obstacles.
 
