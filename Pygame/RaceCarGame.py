@@ -43,9 +43,9 @@ pause = False
 car_icon = pygame.image.load('car icon.png')
 pygame.display.set_icon(car_icon)
 
-def dodged_count(count):
+def highscore_count():
     font = pygame.font.SysFont(None, 25)
-    text = font.render('Dodged: ' + str(count), True, black)
+    text = font.render('High Score: ' + str(get_highscore()), True, black)
     gameDisplay.blit(text, (2, 25))
     
 
@@ -59,8 +59,20 @@ def score_display(count):
     largeText = pygame.font.Font('freesansbold.ttf', 50)
     TextSurf, TextRect = text_objects('Your Score: ' + str(count), largeText)
     TextRect.center = ((display_width / 2), (display_height / 2 - 30))
-    gameDisplay.blit(TextSurf, TextRect)    
-    
+    gameDisplay.blit(TextSurf, TextRect)
+
+
+def save_highscore(count):
+    with open('highscore.txt', 'w') as f:
+        f.write(str(count))
+
+def get_highscore():
+    with open('highscore.txt') as f:
+        current_highscore = f.readline()
+        if current_highscore == '':
+            return 0
+        else:
+            return int(current_highscore)
 
 def road(roadx, roady, roadw, roadh, colour):
     pygame.draw.rect(gameDisplay, colour, [roadx, roady, roadw, roadh])
@@ -87,6 +99,10 @@ def crash():
     gameDisplay.blit(TextSurf, TextRect)
     
     score_display(score)
+
+    current_highscore = get_highscore()
+    if (score > current_highscore):
+        save_highscore(score)
     
     while True:
         for event in pygame.event.get():
@@ -135,8 +151,6 @@ def unpause():
     
 
 def pause_game():
-    
-    
     largeText = pygame.font.Font('freesansbold.ttf', 115)
     TextSurf, TextRect = text_objects('Paused', largeText)
     TextRect.center = ((display_width / 2), (display_height / 2 - 50))
@@ -146,10 +160,7 @@ def pause_game():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-                
-        #gameDisplay.fill(white)
 
-        
         button("Continue", 200, 375, 100, 50, button_green, bright_green, unpause)
         button("Quit", 500, 375, 100, 50, button_red, bright_red, quitgame)
 
@@ -309,8 +320,8 @@ def normal_game():
     car_height = 140
     car_count = 1
     
-    dodged = 0
     score = 0
+    dodged = 0
     
     gameExit = False
     while not gameExit:
@@ -357,8 +368,8 @@ def normal_game():
         car_starty += car_speed
 
         car(carImg1, x, y)
-        dodged_count(dodged)
         score_count(score)
+        highscore_count()
         
         # instead of hitting the walls and doing nothing, change it to crash()
         if x > display_width - player_width - 75 or x < 75:
